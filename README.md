@@ -19,6 +19,8 @@ Demo: http://www.youtube.com/watch?v=E-lfEkBFxwg
 
 3. Install Django>=1.3.1 (django==1.4 recommended)
 
+4. Add ACCESS_KEY, SECRET_KEY and ENDPOINT to nilgiri/dashboard/nilgiri/commands/nilgiricommand.py
+
 Run the server with:
 
     $ python manage.py runserver
