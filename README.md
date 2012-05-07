@@ -1,6 +1,6 @@
 ## Nilgiri: Eucalyptus Management Tool
 
-Nilgiri is an open-source AWS webconsole with the ability to create (and use) one-click installs for commonly hosted web applications. It is based on Django and Boto and designed to work with Eucalyptus.
+Nilgiri is an open-source AWS webconsole with the ability to manage compute, network, and storage resources in an AWS-compatible cloud, and create (and use) one-click installs for commonly hosted web applications. It is based on Django and Boto and designed to work with Eucalyptus.
 
 <img src="http://mdshaonimran.github.com/images/nilgiri.png" width=400>
 
