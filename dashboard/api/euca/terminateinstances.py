@@ -27,20 +27,23 @@
 #
 # Author: Imran Hossain Shaon mdshaonimran@gmail.com
 
-# file: nilgiri/callbacks/images/views.py
+# file: nilgiri/dashboard/dashboard.api/euca/describeinstances.py
 
-from django import shortcuts
-from django.template.context import RequestContext
-from django.http import HttpResponse
-from django.shortcuts import render_to_response, render
 
-import dashboard.api.euca.describeimages
+import dashboard.api.nilgiricommand
+from boto.roboto.param import Param
 
-def describe_images(request):
-    # images
-    nilCmd = dashboard.api.euca.describeimages.DescribeImages()
-    images = nilCmd.main_cli(request.user.id)
-    context = { 'images': images }
-    template = 'images/describe_images.html'
-    #return shortcuts.render_to_response(template, context, context_instance=RequestContext(request))
-    return render(request, 'images/describe_images.html', context)
+class TerminateInstances(dashboard.api.nilgiricommand.NilgiriCommand):
+
+    def main(self, userid, instance_ids):
+        conn = self.make_connection_cli(userid)
+        return conn.terminate_instances(instance_ids)
+
+    def main_cli(self, userid, instanceId):
+        instance_ids = []
+        instance_ids.append(instanceId)
+        instances = self.main(userid, instance_ids)
+        if instances:
+            return "Done"
+        else:
+            return "Failed"

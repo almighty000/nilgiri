@@ -27,20 +27,18 @@
 #
 # Author: Imran Hossain Shaon mdshaonimran@gmail.com
 
-# file: nilgiri/callbacks/images/views.py
+# file: nilgiri/dashboard/nilgiri/commands/euca/describeregions.py
 
-from django import shortcuts
-from django.template.context import RequestContext
-from django.http import HttpResponse
-from django.shortcuts import render_to_response, render
+import nilgiri.commands.nilgiricommand
+from boto.roboto.param import Param
 
-import dashboard.api.euca.describeimages
+class DescribeRegions(nilgiri.commands.nilgiricommand.NilgiriCommand):
 
-def describe_images(request):
-    # images
-    nilCmd = dashboard.api.euca.describeimages.DescribeImages()
-    images = nilCmd.main_cli(request.user.id)
-    context = { 'images': images }
-    template = 'images/describe_images.html'
-    #return shortcuts.render_to_response(template, context, context_instance=RequestContext(request))
-    return render(request, 'images/describe_images.html', context)
+    def main(self, userid):
+        conn = self.make_connection_cli(userid)
+        return self.make_request_cli(conn, 'get_all_regions')
+
+    def main_cli(self, userid):
+        regions = self.main(userid)
+        return regions
+

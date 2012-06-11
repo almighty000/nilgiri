@@ -27,20 +27,14 @@
 #
 # Author: Imran Hossain Shaon mdshaonimran@gmail.com
 
-# file: nilgiri/callbacks/images/views.py
+from django.db import models
 
-from django import shortcuts
-from django.template.context import RequestContext
-from django.http import HttpResponse
-from django.shortcuts import render_to_response, render
+class Credentials(models.Model):
+    access_key = models.CharField(max_length=128)
+    secret_key = models.CharField(max_length=128)
+    region = models.CharField(max_length=128)
+    endpoint = models.CharField(max_length=128)
+    uid = models.IntegerField()
 
-import dashboard.api.euca.describeimages
 
-def describe_images(request):
-    # images
-    nilCmd = dashboard.api.euca.describeimages.DescribeImages()
-    images = nilCmd.main_cli(request.user.id)
-    context = { 'images': images }
-    template = 'images/describe_images.html'
-    #return shortcuts.render_to_response(template, context, context_instance=RequestContext(request))
-    return render(request, 'images/describe_images.html', context)
+

@@ -27,20 +27,23 @@
 #
 # Author: Imran Hossain Shaon mdshaonimran@gmail.com
 
-# file: nilgiri/callbacks/images/views.py
+# file: nilgiri/dashboard/nilgiri/commands/euca/describeinstances.py
 
-from django import shortcuts
-from django.template.context import RequestContext
-from django.http import HttpResponse
-from django.shortcuts import render_to_response, render
+import dashboard.api.nilgiricommand
+from boto.roboto.param import Param
 
-import dashboard.api.euca.describeimages
+class AddKeyPair(dashboard.api.nilgiricommand.NilgiriCommand):
 
-def describe_images(request):
-    # images
-    nilCmd = dashboard.api.euca.describeimages.DescribeImages()
-    images = nilCmd.main_cli(request.user.id)
-    context = { 'images': images }
-    template = 'images/describe_images.html'
-    #return shortcuts.render_to_response(template, context, context_instance=RequestContext(request))
-    return render(request, 'images/describe_images.html', context)
+    def main(self, userid, key_name):
+        conn = self.make_connection_cli(userid)
+        try:
+            query = conn.create_key_pair(key_name)
+        except conn.ResponseError, e:
+            query = e.code
+        return query
+
+    def main_cli(self, userid, key_name):
+        keypair = self.main(userid, key_name)
+        return keypair
+
+

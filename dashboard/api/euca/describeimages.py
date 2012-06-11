@@ -27,20 +27,19 @@
 #
 # Author: Imran Hossain Shaon mdshaonimran@gmail.com
 
-# file: nilgiri/callbacks/images/views.py
+# file: nilgiri/dashboard/nilgiri/commands/euca/describeimages.py
 
-from django import shortcuts
-from django.template.context import RequestContext
-from django.http import HttpResponse
-from django.shortcuts import render_to_response, render
 
-import dashboard.api.euca.describeimages
+import dashboard.api.nilgiricommand
+from boto.roboto.param import Param
 
-def describe_images(request):
-    # images
-    nilCmd = dashboard.api.euca.describeimages.DescribeImages()
-    images = nilCmd.main_cli(request.user.id)
-    context = { 'images': images }
-    template = 'images/describe_images.html'
-    #return shortcuts.render_to_response(template, context, context_instance=RequestContext(request))
-    return render(request, 'images/describe_images.html', context)
+class DescribeImages(dashboard.api.nilgiricommand.NilgiriCommand):
+
+    def main(self, userid):
+        conn = self.make_connection_cli(userid)
+        images = self.make_request_cli(conn, 'get_all_images')
+        return images
+
+    def main_cli(self, userid):
+        images = self.main(userid)
+        return images

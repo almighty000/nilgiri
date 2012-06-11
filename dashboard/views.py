@@ -27,24 +27,32 @@
 #
 # Author: Imran Hossain Shaon mdshaonimran@gmail.com
 
-# file: dashboard/views.py
+from django.core.context_processors import csrf
+from django.template import Context, loader
+from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import render_to_response, render
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
+from usercreds.models import Credentials
 
-from django import shortcuts
-from django.template.context import RequestContext
 
+import api.nilgiricommand
 
-# imports nilgiri
-import nilgiri.commands.nilgiricommand
-
-def home(request):
-    
-    # version
-    nilCmd = nilgiri.commands.nilgiricommand.NilgiriCommand()
+def index(request):
+    nilCmd = api.nilgiricommand.NilgiriCommand()
     nversion = nilCmd.nversion()
-    
-    context = { 'nversion': nversion }
-    
-    template = 'home.html'
-    return shortcuts.render_to_response(template, context, context_instance=RequestContext(request))
-#    return shortcuts.render(request, context, 'splash.html',)
+    c = { 'nversion': nversion }
+    #if request.user.is_authenticated():
+    #    username = request.user.username
+    #    user = request.user
+    return render(request, "index.html", c)
 
+@login_required(login_url='/')
+def dashboard_view(request):
+    creds = Credentials.objects.get(uid=request.user.id)
+    c = { 'creds': creds, 'id': request.user.id }
+    if(creds.access_key == ""):
+        return render(request, "home.html")
+    else:
+        return render(request, 'dashboard/dashboard.html', c)

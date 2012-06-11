@@ -27,7 +27,6 @@
 #
 # Author: Imran Hossain Shaon mdshaonimran@gmail.com
 
-
 from django.db import models
 
 # Create your models here.

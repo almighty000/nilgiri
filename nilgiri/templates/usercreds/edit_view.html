@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+<form class="well" action="/update/" method="post">{% csrf_token %}
+    <input type="text" class="span3" name="accesskey" placeholder="Aceess key" value="{{ access_key }}"><br>
+    <input type="password" class="span3" name="secretkey" placeholder="Secret key" value="{{ secret_key }}"><br>
+    <input type="text" class="span3" name="region" placeholder="eucalyptus" value="{{ region }}"><br>
+    <input type="text" class="span3" name="endpoint" placeholder="example.com" value="{{ endpoint }}"><br>
+    <button type="submit" class="btn btn-primary">Save</button>
+</form>
+user id: {{ uid }}
+{% endblock %}

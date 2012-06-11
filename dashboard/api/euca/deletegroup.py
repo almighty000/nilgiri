@@ -27,20 +27,18 @@
 #
 # Author: Imran Hossain Shaon mdshaonimran@gmail.com
 
-# file: nilgiri/callbacks/images/views.py
+# file: nilgiri/dashboard/nilgiri/commands/euca/startinstances.py
 
-from django import shortcuts
-from django.template.context import RequestContext
-from django.http import HttpResponse
-from django.shortcuts import render_to_response, render
 
-import dashboard.api.euca.describeimages
+import dashboard.api.nilgiricommand
+from boto.roboto.param import Param
 
-def describe_images(request):
-    # images
-    nilCmd = dashboard.api.euca.describeimages.DescribeImages()
-    images = nilCmd.main_cli(request.user.id)
-    context = { 'images': images }
-    template = 'images/describe_images.html'
-    #return shortcuts.render_to_response(template, context, context_instance=RequestContext(request))
-    return render(request, 'images/describe_images.html', context)
+class DeleteGroup(dashboard.api.nilgiricommand.NilgiriCommand):
+
+    def main(self, userid, group_name):
+        euca_conn = self.make_connection_cli(userid)
+        return euca_conn.delete_security_group(group_name)
+
+    def main_cli(self, userid, group_name):
+        status = self.main(userid, group_name)
+        return group_name

@@ -26,3 +26,5 @@
 # POSSIBILITY OF SUCH DAMAGE.
 #
 # Author: Imran Hossain Shaon mdshaonimran@gmail.com
+
+__version__ = '0.0.1'

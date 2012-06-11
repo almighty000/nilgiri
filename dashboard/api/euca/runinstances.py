@@ -27,20 +27,26 @@
 #
 # Author: Imran Hossain Shaon mdshaonimran@gmail.com
 
-# file: nilgiri/callbacks/images/views.py
+# file: nilgiri/dashboard/nilgiri/commands/euca/startinstances.py
 
-from django import shortcuts
-from django.template.context import RequestContext
-from django.http import HttpResponse
-from django.shortcuts import render_to_response, render
 
-import dashboard.api.euca.describeimages
+import dashboard.api.nilgiricommand
+from boto.roboto.param import Param
 
-def describe_images(request):
-    # images
-    nilCmd = dashboard.api.euca.describeimages.DescribeImages()
-    images = nilCmd.main_cli(request.user.id)
-    context = { 'images': images }
-    template = 'images/describe_images.html'
-    #return shortcuts.render_to_response(template, context, context_instance=RequestContext(request))
-    return render(request, 'images/describe_images.html', context)
+class RunInstances(dashboard.api.nilgiricommand.NilgiriCommand):
+    
+    def main(self, userid, emi_image_id, key, groups, vm_type, add_type=None):
+        conn = self.make_connection_cli(userid)
+        return conn.run_instances(emi_image_id,
+                                    key_name=key,
+                                    instance_type=vm_type,
+                                    security_groups=groups,
+                                    addressing_type=add_type)
+
+    def main_cli(self, userid, emi_image_id, key, groups, vm_type, add_type):
+        if(add_type == "None"):
+            instances = self.main(userid, emi_image_id, key, groups, vm_type)
+        else:
+            instances = self.main(userid, emi_image_id, key, groups, vm_type, add_type)
+        return instances
+

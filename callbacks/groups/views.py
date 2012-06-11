@@ -32,58 +32,64 @@
 from django import shortcuts
 from django.template.context import RequestContext
 from django.http import HttpResponse
+from django.shortcuts import render_to_response, render
 
-import dashboard.nilgiri.commands.euca.describegroups
-import dashboard.nilgiri.commands.euca.addgroup
-import dashboard.nilgiri.commands.euca.deletegroup
-import dashboard.nilgiri.commands.euca.editgroup
-import dashboard.nilgiri.commands.euca.authorize
-import dashboard.nilgiri.commands.euca.revoke
+import dashboard.api.euca.describegroups
+import dashboard.api.euca.addgroup
+import dashboard.api.euca.deletegroup
+import dashboard.api.euca.editgroup
+import dashboard.api.euca.authorize
+import dashboard.api.euca.revoke
 
 def groups(request):
     context = { }
     template = 'groups/groups.html'
-    return shortcuts.render_to_response(template, context, context_instance=RequestContext(request))
+    #return shortcuts.render_to_response(template, context, context_instance=RequestContext(request))
+    return render(request, template, context)
 
 # all groups
 def describe_groups(request):
-    nilCmd = dashboard.nilgiri.commands.euca.describegroups.DescribeGroups()
-    groups = nilCmd.main_cli()
+    nilCmd = dashboard.api.euca.describegroups.DescribeGroups()
+    groups = nilCmd.main_cli(request.user.id)
     context = { 'groups': groups }
     template = 'groups/describe_groups.html'
-    return shortcuts.render_to_response(template, context, context_instance=RequestContext(request))
+    #return shortcuts.render_to_response(template, context, context_instance=RequestContext(request))
+    return render(request, template, context)
 
 # edit group
 def edit_group(request):
     query = request.POST.get('group_name', '')
-    nilCmd = dashboard.nilgiri.commands.euca.editgroup.EditGroup()
-    groups = nilCmd.main_cli(query)
+    nilCmd = dashboard.api.euca.editgroup.EditGroup()
+    groups = nilCmd.main_cli(request.user.id, query)
     context = { 'groups': groups }
     template = 'groups/edit_group.html'
-    return shortcuts.render_to_response(template, context, context_instance=RequestContext(request))
+    #return shortcuts.render_to_response(template, context, context_instance=RequestContext(request))
+    return render(request, template, context)
 
 def describe_group(request):
     query = request.POST.get('group_name', '')
-    nilCmd = dashboard.nilgiri.commands.euca.editgroup.EditGroup()
-    groups = nilCmd.main_cli(query)
+    nilCmd = dashboard.api.euca.editgroup.EditGroup()
+    groups = nilCmd.main_cli(request.user.id, query)
     context = { 'groups': groups }
     template = 'groups/describe_group.html'
-    return shortcuts.render_to_response(template, context, context_instance=RequestContext(request))
+    #return shortcuts.render_to_response(template, context, context_instance=RequestContext(request))
+    return render(request, template, context)
 
 def create_group(request):
     query_name = request.POST.get('group_name', '')
     query_description = request.POST.get('group_description', '')
-    nilCmd = dashboard.nilgiri.commands.euca.addgroup.AddGroup()
-    group = nilCmd.main_cli(query_name, query_description)
+    nilCmd = dashboard.api.euca.addgroup.AddGroup()
+    group = nilCmd.main_cli(request.user.id, query_name, query_description)
     context = { 'group': group }
     template = 'groups/create_group.html'
-    return shortcuts.render_to_response(template, context, context_instance=RequestContext(request))
+    #return shortcuts.render_to_response(template, context, context_instance=RequestContext(request))
+    return render(request, template, context)
 
 
 def delete_group(request):
     query = request.POST.get('group_name', '')
-    nilCmd = dashboard.nilgiri.commands.euca.deletegroup.DeleteGroup()
-    status = nilCmd.main_cli(query)
+    nilCmd = dashboard.api.euca.deletegroup.DeleteGroup()
+    status = nilCmd.main_cli(request.user.id, query)
     return HttpResponse(status)
 
 
@@ -93,8 +99,8 @@ def authorize_group(request):
     query_from_port = request.POST.get('from_port', '')
     query_to_port = request.POST.get('to_port', '')
     query_cidr_ip = request.POST.get('cidr_ip', '')
-    nilCmd = dashboard.nilgiri.commands.euca.authorize.Authorize()
-    status = nilCmd.main_cli(query_group_name, query_ip_protocol, query_from_port, query_to_port, query_cidr_ip)
+    nilCmd = dashboard.api.euca.authorize.Authorize()
+    status = nilCmd.main_cli(request.user.id, query_group_name, query_ip_protocol, query_from_port, query_to_port, query_cidr_ip)
     return HttpResponse(status)
 
 
@@ -105,6 +111,6 @@ def revoke_rules(request):
     query_to_port = request.POST.get('to_port', '')
     query_cidr_ip = request.POST.get('cidr_ip', '')
     
-    nilCmd = dashboard.nilgiri.commands.euca.revoke.Revoke()
-    status = nilCmd.main_cli(query_group_name, query_ip_protocol, query_from_port, query_to_port, query_cidr_ip)
+    nilCmd = dashboard.api.euca.revoke.Revoke()
+    status = nilCmd.main_cli(request.user.id, query_group_name, query_ip_protocol, query_from_port, query_to_port, query_cidr_ip)
     return HttpResponse(status)

@@ -27,20 +27,27 @@
 #
 # Author: Imran Hossain Shaon mdshaonimran@gmail.com
 
-# file: nilgiri/callbacks/images/views.py
+from django.conf.urls import patterns, include, url
+from django.conf import settings
 
-from django import shortcuts
-from django.template.context import RequestContext
-from django.http import HttpResponse
-from django.shortcuts import render_to_response, render
+from django.contrib import admin
+admin.autodiscover()
 
-import dashboard.api.euca.describeimages
+urlpatterns = patterns('',
+    # Examples:
+    # url(r'^$', 'nilgiri.views.home', name='home'),
+    # url(r'^nilgiri/', include('nilgiri.foo.urls')),
 
-def describe_images(request):
-    # images
-    nilCmd = dashboard.api.euca.describeimages.DescribeImages()
-    images = nilCmd.main_cli(request.user.id)
-    context = { 'images': images }
-    template = 'images/describe_images.html'
-    #return shortcuts.render_to_response(template, context, context_instance=RequestContext(request))
-    return render(request, 'images/describe_images.html', context)
+    url(r'^admin/', include(admin.site.urls)),
+    url(r'^', include('dashboard.urls')),
+    url(r'^', include('usercreds.urls')),
+    url(r'^', include('callbacks.urls')),
+)
+
+
+if settings.DEBUG:
+    urlpatterns = patterns('',
+        url(r'^static/(?P<path>.*)$', 'django.views.static.serve', {
+            'document_root': settings.STATIC_ROOT,
+        }),
+    ) + urlpatterns

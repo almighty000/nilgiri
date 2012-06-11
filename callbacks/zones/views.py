@@ -32,20 +32,21 @@
 from django import shortcuts
 from django.template.context import RequestContext
 from django.http import HttpResponse
+from django.shortcuts import render_to_response, render
 
-import dashboard.nilgiri.commands.euca.describeavailabilityzones
+import dashboard.api.euca.describeavailabilityzones
 
 def describe_available_zones(request):
     feed = request.POST.get('feed', '')
-    nilCmd = dashboard.nilgiri.commands.euca.describeavailabilityzones.DescribeAvailabilityZones()
-    zones = nilCmd.main_cli()
+    nilCmd = dashboard.api.euca.describeavailabilityzones.DescribeAvailabilityZones()
+    zones = nilCmd.main_cli(request.user.id)
     context = { 'zones': zones }
     if not feed:
         template = 'zones/describe_available_zones.html'
-        return shortcuts.render_to_response(template, context, context_instance=RequestContext(request))
+        return render(request, template, context)
     else:
         if feed == "zone_feed":
             template = 'zones/describe_available_zones_feed.html'
-            return shortcuts.render_to_response(template, context, context_instance=RequestContext(request))
+            return render(request, template, context)
 
 

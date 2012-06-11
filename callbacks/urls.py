@@ -27,20 +27,14 @@
 #
 # Author: Imran Hossain Shaon mdshaonimran@gmail.com
 
-# file: nilgiri/callbacks/images/views.py
+from django.conf.urls.defaults import patterns, include, url
+from django.conf import settings
 
-from django import shortcuts
-from django.template.context import RequestContext
-from django.http import HttpResponse
-from django.shortcuts import render_to_response, render
-
-import dashboard.api.euca.describeimages
-
-def describe_images(request):
-    # images
-    nilCmd = dashboard.api.euca.describeimages.DescribeImages()
-    images = nilCmd.main_cli(request.user.id)
-    context = { 'images': images }
-    template = 'images/describe_images.html'
-    #return shortcuts.render_to_response(template, context, context_instance=RequestContext(request))
-    return render(request, 'images/describe_images.html', context)
+urlpatterns = patterns('',
+    url(r'^', include('callbacks.instances.urls')),
+    url(r'^', include('callbacks.images.urls')),
+    url(r'^', include('callbacks.volumes.urls')),
+    url(r'^', include('callbacks.zones.urls')),
+    url(r'^', include('callbacks.keypairs.urls')),
+    url(r'^', include('callbacks.groups.urls')),
+)

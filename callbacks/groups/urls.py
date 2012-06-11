@@ -27,20 +27,16 @@
 #
 # Author: Imran Hossain Shaon mdshaonimran@gmail.com
 
-# file: nilgiri/callbacks/images/views.py
+from django.conf.urls.defaults import patterns, include, url
+from django.conf import settings
 
-from django import shortcuts
-from django.template.context import RequestContext
-from django.http import HttpResponse
-from django.shortcuts import render_to_response, render
-
-import dashboard.api.euca.describeimages
-
-def describe_images(request):
-    # images
-    nilCmd = dashboard.api.euca.describeimages.DescribeImages()
-    images = nilCmd.main_cli(request.user.id)
-    context = { 'images': images }
-    template = 'images/describe_images.html'
-    #return shortcuts.render_to_response(template, context, context_instance=RequestContext(request))
-    return render(request, 'images/describe_images.html', context)
+urlpatterns = patterns('callbacks.groups.views',
+    url(r'^groups/groups', 'groups'),
+    url(r'^groups/describe_groups', 'describe_groups'),
+    url(r'^groups/describe_group', 'describe_group'),
+    url(r'^groups/create_group', 'create_group'),
+    url(r'^groups/edit_group', 'edit_group'),
+    url(r'^groups/revoke_rules', 'revoke_rules'),
+    url(r'^groups/authorize_group', 'authorize_group'),
+    url(r'^groups/delete_group', 'delete_group'),
+)

@@ -27,20 +27,19 @@
 #
 # Author: Imran Hossain Shaon mdshaonimran@gmail.com
 
-# file: nilgiri/callbacks/images/views.py
+# file: nilgiri/dashboard/nilgiri/commands/euca/describeinstances.py
 
-from django import shortcuts
-from django.template.context import RequestContext
-from django.http import HttpResponse
-from django.shortcuts import render_to_response, render
+import dashboard.api.nilgiricommand
+from boto.roboto.param import Param
 
-import dashboard.api.euca.describeimages
+class AddGroup(dashboard.api.nilgiricommand.NilgiriCommand):
 
-def describe_images(request):
-    # images
-    nilCmd = dashboard.api.euca.describeimages.DescribeImages()
-    images = nilCmd.main_cli(request.user.id)
-    context = { 'images': images }
-    template = 'images/describe_images.html'
-    #return shortcuts.render_to_response(template, context, context_instance=RequestContext(request))
-    return render(request, 'images/describe_images.html', context)
+    def main(self, userid, group_name, group_description):
+        conn = self.make_connection_cli(userid)
+        return conn.create_security_group(group_name, group_description)
+
+    def main_cli(self, userid, name, description):
+        group = self.main(userid, name, description)
+        return group
+
+

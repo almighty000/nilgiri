@@ -27,20 +27,21 @@
 #
 # Author: Imran Hossain Shaon mdshaonimran@gmail.com
 
-# file: nilgiri/callbacks/images/views.py
+# file: nilgiri/dashboard/nilgiri/commands/euca/detachvolume.py
 
-from django import shortcuts
-from django.template.context import RequestContext
-from django.http import HttpResponse
-from django.shortcuts import render_to_response, render
+import dashboard.api.nilgiricommand
+from boto.roboto.param import Param
 
-import dashboard.api.euca.describeimages
+class DetachVolume(dashboard.api.nilgiricommand.NilgiriCommand):
 
-def describe_images(request):
-    # images
-    nilCmd = dashboard.api.euca.describeimages.DescribeImages()
-    images = nilCmd.main_cli(request.user.id)
-    context = { 'images': images }
-    template = 'images/describe_images.html'
-    #return shortcuts.render_to_response(template, context, context_instance=RequestContext(request))
-    return render(request, 'images/describe_images.html', context)
+    def main(self, userid, query_volume_id):
+        conn = self.make_connection_cli(userid)
+        return conn.detach_volume(volume_id=query_volume_id)
+
+    def main_cli(self, userid, query_volume_id):
+        status = self.main(userid, query_volume_id)
+        if status:
+            return 'VOLUME: %s' % query_volume_id
+        else:
+            return 'Failed: %s' % query_volume_id
+

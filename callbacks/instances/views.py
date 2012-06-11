@@ -32,30 +32,32 @@
 from django import shortcuts
 from django.template.context import RequestContext
 from django.http import HttpResponse
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render_to_response, render
 
-import dashboard.nilgiri.commands.euca.describeinstances
-import dashboard.nilgiri.commands.euca.terminateinstances
-import dashboard.nilgiri.commands.euca.runinstances
+import dashboard.api.euca.describeinstances
+import dashboard.api.euca.terminateinstances
+import dashboard.api.euca.runinstances
 
 
 def describe_instances(request):
+    userid = request.user.id
     feed = request.POST.get('feed', '')
-    nilCmd = dashboard.nilgiri.commands.euca.describeinstances.DescribeInstances()
-    reservations = nilCmd.main_cli()
+    nilCmd = dashboard.api.euca.describeinstances.DescribeInstances()
+    reservations = nilCmd.main_cli(request.user.id)
     context = { 'reservations': reservations }
     if not feed:
         template = 'instances/describe_instances.html'
-        return shortcuts.render_to_response(template, context, context_instance=RequestContext(request))
+        return render(request, template, context)
     else:
         if feed == "volume_feed":
             template = 'instances/instance_ids.html'
-            return shortcuts.render_to_response(template, context, context_instance=RequestContext(request))
-
+            return render(request, template, context)
 
 def terminate_instances(request):
     query = request.POST.get('id', '')
-    nilCmd = dashboard.nilgiri.commands.euca.terminateinstances.TerminateInstances()
-    instances = nilCmd.main_cli(query)
+    nilCmd = dashboard.api.euca.terminateinstances.TerminateInstances()
+    instances = nilCmd.main_cli(request.user.id, query)
     return HttpResponse(instances)
 
 def launch_instance(request):
@@ -64,11 +66,10 @@ def launch_instance(request):
     query_group = request.POST.get('selected_group', '')
     context = { 'image': query_image, 'key': query_key, 'group': query_group }
     template = "instances/launch_instance.html"
-    return shortcuts.render_to_response(template, context, context_instance=RequestContext(request))
+    return render(request, template, context)
 
 
 def run_instances(request):
-    # run instance
     query_key = request.POST.get('selected_key', '')
     query_image = request.POST.get('selected_image', '')
     query_groups = request.POST.get('selected_group', '')
@@ -77,8 +78,8 @@ def run_instances(request):
     
     groups = []
     groups.append(query_groups)
-    nilCmd = dashboard.nilgiri.commands.euca.runinstances.RunInstances()
-    reservation = nilCmd.main_cli(query_image, query_key, groups, query_instance_type, query_addressing_type)
+    nilCmd = dashboard.api.euca.runinstances.RunInstances()
+    reservation = nilCmd.main_cli(request.user.id, query_image, query_key, groups, query_instance_type, query_addressing_type)
     context = { 'reservation': reservation }
     template = "instances/new_instance.html"
-    return shortcuts.render_to_response(template, context, context_instance=RequestContext(request))
+    return render(request, template, context)
