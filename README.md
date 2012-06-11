@@ -14,12 +14,18 @@ Demo: http://www.youtube.com/watch?v=E-lfEkBFxwg
 
 1. Install virtualenv
 
-2. Install boto 2.3.0
+2. Install boto
 
-3. Install Django>=1.3.1 (django==1.4 recommended)
+3. Install Django
 
-4. Add ACCESS_KEY, SECRET_KEY and ENDPOINT to nilgiri/dashboard/nilgiri/commands/nilgiricommand.py
+4. Install MySQL-python
 
-Run the server with:
+5. Create a database "nilgiri"
+
+6. Run the server with:
 
     $ python manage.py runserver
+
+7. Create an user (not the admin user)
+
+8. Login and edit credentials
