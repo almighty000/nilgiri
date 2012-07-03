@@ -27,7 +27,7 @@
 #
 # Author: Imran Hossain Shaon mdshaonimran@gmail.com
 
-# file: nilgiri/dashboard/nilgiri/commands/euca/describeavailablezones.py
+# file: dashboard/api/euca/describeavailabilityzone.py
 
 import dashboard.api.nilgiricommand
 from boto.roboto.param import Param

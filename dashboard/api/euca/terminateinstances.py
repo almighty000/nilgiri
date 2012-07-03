@@ -27,8 +27,7 @@
 #
 # Author: Imran Hossain Shaon mdshaonimran@gmail.com
 
-# file: nilgiri/dashboard/dashboard.api/euca/describeinstances.py
-
+# file: dashboard/api/euca/terminateinstance.py
 
 import dashboard.api.nilgiricommand
 from boto.roboto.param import Param

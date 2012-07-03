@@ -27,6 +27,8 @@
 #
 # Author: Imran Hossain Shaon mdshaonimran@gmail.com
 
+# file: dashboard/views.py
+
 from django.core.context_processors import csrf
 from django.template import Context, loader
 from django.http import HttpResponse, HttpResponseRedirect

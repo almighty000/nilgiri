@@ -27,6 +27,8 @@
 #
 # Author: Imran Hossain Shaon mdshaonimran@gmail.com
 
+# file: usercreds/views.py
+
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render_to_response, render

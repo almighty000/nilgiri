@@ -27,23 +27,33 @@
 #
 # Author: Imran Hossain Shaon mdshaonimran@gmail.com
 
-# file: dashboard/api/euca/addkeypair.py
+# file: callbacks/snapshots/views.py
 
-import dashboard.api.nilgiricommand
-from boto.roboto.param import Param
+from django import shortcuts
+from django.template.context import RequestContext
+from django.http import HttpResponse
+from django.template.defaultfilters import slugify
+from django.shortcuts import render_to_response, render
 
-class AddKeyPair(dashboard.api.nilgiricommand.NilgiriCommand):
+import dashboard.api.euca.describesnapshots
+import dashboard.api.euca.deletesnapshot
+import dashboard.api.euca.createsnapshot
 
-    def main(self, userid, key_name):
-        conn = self.make_connection_cli(userid)
-        try:
-            query = conn.create_key_pair(key_name)
-        except conn.ResponseError, e:
-            query = e.code
-        return query
+def describe_snapshot_view(request):
+    nilCmd = dashboard.api.euca.describesnapshots.DescribeSnapshots()
+    snapshots = nilCmd.main_cli(request.user.id)
+    context = { 'snapshots': snapshots }
+    template = 'snapshots/describe_snapshots.html'
+    return render(request, template, context)
 
-    def main_cli(self, userid, key_name):
-        keypair = self.main(userid, key_name)
-        return keypair
+def delete_snapshot(request):
+    query_snapshot_id = request.POST.get('snapshot_id', '')
+    nilCmd = dashboard.api.euca.deletesnapshot.DeleteSnapshot()
+    status = nilCmd.main_cli(request.user.id, query_snapshot_id)
+    return HttpResponse(status)
 
-
+def create_snapshot(request):
+    query_volume = request.POST.get('volume_id', '')
+    nilCmd = dashboard.api.euca.createsnapshot.CreateSnapshot()
+    status = nilCmd.main_cli(request.user.id, query_volume)
+    return HttpResponse(status)

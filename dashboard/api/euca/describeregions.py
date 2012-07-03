@@ -27,7 +27,7 @@
 #
 # Author: Imran Hossain Shaon mdshaonimran@gmail.com
 
-# file: nilgiri/dashboard/nilgiri/commands/euca/describeregions.py
+# file: dashboard/api/euca/describeregions.py
 
 import nilgiri.commands.nilgiricommand
 from boto.roboto.param import Param

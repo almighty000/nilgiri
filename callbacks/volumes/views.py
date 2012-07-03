@@ -27,7 +27,7 @@
 #
 # Author: Imran Hossain Shaon mdshaonimran@gmail.com
 
-# file: nilgiri/callbacks/volumes/views.py
+# file: callbacks/volumes/views.py
 
 from django import shortcuts
 from django.template.context import RequestContext
@@ -45,13 +45,11 @@ def describe_volumes(request):
     volumes = nilCmd.main_cli(request.user.id)
     context = { 'volumes': volumes }
     template = 'volumes/describe_volumes.html'
-    #return shortcuts.render_to_response(template, context, context_instance=RequestContext(request))
     return render(request, template, context)
 
 def create_volume_view(request):
     context = { }
     template = 'volumes/create_volume.html'
-    #return shortcuts.render_to_response(template, context, context_instance=RequestContext(request))
     return render(request, template, context)
 
 def create_volume(request):
@@ -62,9 +60,6 @@ def create_volume(request):
     context = { 'volume': volume }
     template = 'volumes/new_volume.html'
     return render(request, template, context)
-    #return shortcuts.render_to_response(template, context, context_instance=RequestContext(request))
-
-
 
 def delete_volume(request):
     query_vol_id = request.POST.get('vol_id', '')

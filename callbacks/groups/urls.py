@@ -30,6 +30,8 @@
 from django.conf.urls.defaults import patterns, include, url
 from django.conf import settings
 
+# file: callbacks/snapshots/urls.py
+
 urlpatterns = patterns('callbacks.groups.views',
     url(r'^groups/groups', 'groups'),
     url(r'^groups/describe_groups', 'describe_groups'),

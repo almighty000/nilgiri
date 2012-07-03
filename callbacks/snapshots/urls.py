@@ -27,23 +27,13 @@
 #
 # Author: Imran Hossain Shaon mdshaonimran@gmail.com
 
-# file: dashboard/api/euca/addkeypair.py
+# file: callbacks/snapshots/urls.py
 
-import dashboard.api.nilgiricommand
-from boto.roboto.param import Param
+from django.conf.urls.defaults import patterns, include, url
+from django.conf import settings
 
-class AddKeyPair(dashboard.api.nilgiricommand.NilgiriCommand):
-
-    def main(self, userid, key_name):
-        conn = self.make_connection_cli(userid)
-        try:
-            query = conn.create_key_pair(key_name)
-        except conn.ResponseError, e:
-            query = e.code
-        return query
-
-    def main_cli(self, userid, key_name):
-        keypair = self.main(userid, key_name)
-        return keypair
-
-
+urlpatterns = patterns('callbacks.snapshots.views',
+    url(r'^snapshots/describe_snapshot_view', 'describe_snapshot_view'),
+    url(r'^snapshots/delete_snapshot', 'delete_snapshot'),
+    url(r'^snapshots/create_snapshot', 'create_snapshot'),
+)

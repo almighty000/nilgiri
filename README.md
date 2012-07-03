@@ -4,6 +4,8 @@ Nilgiri is an open-source AWS webconsole with the ability to manage compute, net
 
 <img src="http://mdshaonimran.github.com/images/nilgiri.png" width=400>
 
+### Eucalyptus 3.1 Compatible
+
 ### Description
 
 Demo: http://www.youtube.com/watch?v=E-lfEkBFxwg
@@ -22,10 +24,14 @@ Demo: http://www.youtube.com/watch?v=E-lfEkBFxwg
 
 5. Create a database "nilgiri"
 
+7. Run syncdb:
+    
+    $ python manage.py syncdb
+
 6. Run the server with:
 
     $ python manage.py runserver
 
 7. Create an user (not the admin user)
 
-8. Login and edit credentials
+8. Register, login and edit credentials

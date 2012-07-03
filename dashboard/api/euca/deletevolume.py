@@ -27,7 +27,7 @@
 #
 # Author: Imran Hossain Shaon mdshaonimran@gmail.com
 
-# file: nilgiri/dashboard/nilgiri/commands/euca/deletevolume.py
+# file: dashboard/api/euca/deletevolume.py
 
 import dashboard.api.nilgiricommand
 from boto.roboto.param import Param

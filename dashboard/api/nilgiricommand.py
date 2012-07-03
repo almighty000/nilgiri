@@ -27,7 +27,7 @@
 #
 # Author: Imran Hossain Shaon mdshaonimran@gmail.com
 
-# file: nilgiri/dashboard/nilgiri/commands/nilgiricommand.py
+# file: dashboard/api/nilgiricommand.py
 
 import dashboard
 import getopt
@@ -60,6 +60,7 @@ class NilgiriCommand(object):
         self.region.name = creds.region
         self.region.endpoint = creds.endpoint
 
+    APIVersion = '2009-11-30'
     def make_ec2_connection(self):
         self.is_secure = True
         self.debug = 1
@@ -75,7 +76,8 @@ class NilgiriCommand(object):
                                 region=self.region,
                                 port=self.port,
                                 path=self.service_path,
-                                debug=self.debug)
+                                debug=self.debug,
+                                api_version=self.APIVersion)
 
     def make_connection(self, conn_type='ec2'):
         if conn_type == 's3':

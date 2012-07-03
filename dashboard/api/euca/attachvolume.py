@@ -27,8 +27,7 @@
 #
 # Author: Imran Hossain Shaon mdshaonimran@gmail.com
 
-# file: nilgiri/dashboard/nilgiri/commands/euca/attachvolume.py
-
+# file: dashboard/api/euca/attachvolume.py
 
 import dashboard.api.nilgiricommand
 from boto.roboto.param import Param

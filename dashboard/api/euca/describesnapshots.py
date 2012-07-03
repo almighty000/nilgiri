@@ -27,23 +27,19 @@
 #
 # Author: Imran Hossain Shaon mdshaonimran@gmail.com
 
-# file: dashboard/api/euca/addkeypair.py
+# file: dashboard/api/euca/describesnapshot.py
 
 import dashboard.api.nilgiricommand
 from boto.roboto.param import Param
 
-class AddKeyPair(dashboard.api.nilgiricommand.NilgiriCommand):
+class DescribeSnapshots(dashboard.api.nilgiricommand.NilgiriCommand):
 
-    def main(self, userid, key_name):
+    def main(self, userid):
         conn = self.make_connection_cli(userid)
-        try:
-            query = conn.create_key_pair(key_name)
-        except conn.ResponseError, e:
-            query = e.code
-        return query
+        return conn.get_all_snapshots()
 
-    def main_cli(self, userid, key_name):
-        keypair = self.main(userid, key_name)
-        return keypair
-
+    def main_cli(self, userid):
+        snapshots = self.main(userid)
+        return snapshots
+        
 

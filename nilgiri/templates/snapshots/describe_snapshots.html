@@ -1,91 +1,52 @@
+Snapshots becoming ready! :D
+
 <table class="table table-bordered table-striped">
     <thead>
         <tr>
-            <th>Volume ID</th>
-            <th>Size</th>
             <th>Snapshot ID</th>
-            <th>Zone</th>
+            <th>Volume ID</th>
             <th>Status</th>
-            <th>Created</th>
-            <th>Instance</th>
-            <th>Device</th>
-            <th>Created</th>
+            <th>Started</th>
+            <th>Progress</th>
+            <th>Volume Size</th>
+            <th>Description</th>
             <th>Action</th>
         </tr>
     </thead>
     <tbody>
-        {% for volume in volumes %}
-          {% if volume.status != "deleted" %}
+        {% for snapshot in snapshots %}
         <tr>
-            <td>{{ volume.id }}</td>
-            <td>{{ volume.size }}</td>
-            <td>{{ volume.snapshot_id }}</td>
-            <td>{{ volume.zone }}</td>
-            <td>{{ volume.status }}</td>
-            <td>{{ volume.create_time }}</td>
-            <td class="attach_instance_view">{{ volume.attach_data.instance_id }}</td>
-            <td class="attach_device_view">{{ volume.attach_data.device }}</td>
-            <td>{{ volume.attach_data.attach_time }}</td>
-            <td class="">
-              <div class="attach_action_view">
-            {% if volume.status == "in-use" %}
-            <!-- <button data-loading-text="loading..." class="btn btn-primary" disabled="disabled" href="#" value="">Attach</button> -->
-            <button data-loading-text="loading..." class="btn btn-success snapshot"  href="#" value="{{ volume.id }}">Snapshot</button>
-              <button data-loading-text="loading..." class="btn btn-danger detach_volumes" href="#" value="{{ volume.id }}">Detach</button>
-            {% else %}
-              <button data-loading-text="loading..." class="btn btn-primary attach_volumes" href="#" value="">Attach</button>
-              <button data-loading-text="loading..." class="btn btn-danger delete_volumes" href="#" value="{{ volume.id }}">Delete</button>
-            {% endif %}
-              </div>
-              
-              <div class="attach_action_view_ghost" style="display: none;">
-                <button data-loading-text="loading..." class="btn btn-primary attach_volumes_save" href="#" value="{{ volume.id }}">Save</button>
-                <button data-loading-text="loading..." class="btn btn-danger attach_volumes_cancel" href="#" value="">Cancel</button>
-              </div>
+            <td>{{ snapshot.id }}</td>
+            <td>{{ snapshot.volume_id}} </td>
+            <td>{{ snapshot.status }}</td>
+            <td>{{ snapshot.start_time }}</td>
+            <td>{{ snapshot.progress }}</td>
+            <td>{{ snapshot.volume_size }}</td>
+            <td>{{ snapshot.description }}</td>
+            <td>
+                <button data-loading-text="loading..." class="btn btn-danger delete_snapshot" href="#" value="{{ snapshot.id }}">Delete</button>
             </td>
         </tr>
-          {% endif %}
         {% endfor %}
     </tbody>
 </table>
 
-<script>
-
-    $("button.snapshot").click(function() {
-        var that = $(this);
-        that.button('loading');
-        var params={
-            'volume_id': that.attr("value")
-        };
-        $.ajax({
-            url: "/snapshots/create_snapshot",
-            type: "POST",
-            data: {
-                'volume_id': that.attr("value"),
-                csrfmiddlewaretoken: '{{ csrf_token }}'
-            },
-            success: function(data) {
-                that.button('reset');
-            },
-            crossDomain: false
-        })
-    });
-
-        $("button.delete_volumes").click(function() {
+    <script>
+        $("button.delete_snapshot").click(function() {
             var that = $(this);
             that.button('loading');
             var params={
-                'vol_id': that.attr("value")
+                'snapshot_id': that.attr("value")
             };
             $.ajax({
-                url: "/volumes/delete_volume",
+                url: "/snapshots/delete_snapshot",
                 type: "POST",
                 data: {
-                    'vol_id': that.attr("value"),
+                    'snapshot_id': that.attr("value"),
                     csrfmiddlewaretoken: '{{ csrf_token }}'
                 },
                 success: function(data) {
-                    $("button.delete_volumes").button('reset');
+                    $("button.delete_snapshot").button('reset');
                     that.parents("tr").hide();
                 },
                 crossDomain: false

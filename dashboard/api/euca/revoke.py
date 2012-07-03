@@ -27,8 +27,7 @@
 #
 # Author: Imran Hossain Shaon mdshaonimran@gmail.com
 
-# file: nilgiri/dashboard/nilgiri/commands/euca/startinstances.py
-
+# file: dashboard/api/euca/revoke.py
 
 import dashboard.api.nilgiricommand
 from boto.roboto.param import Param

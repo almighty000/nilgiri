@@ -27,6 +27,8 @@
 #
 # Author: Imran Hossain Shaon mdshaonimran@gmail.com
 
+# file: callbacks/volumess/urls.py
+
 from django.conf.urls.defaults import patterns, include, url
 from django.conf import settings
 
@@ -36,4 +38,5 @@ urlpatterns = patterns('callbacks.volumes.views',
     url(r'^volumes/describe_volumes', 'describe_volumes'),
     url(r'^volumes/attach_volume', 'attach_volume'),
     url(r'^volumes/detach_volume', 'detach_volume'),
+    url(r'^volumes/delete_volume', 'delete_volume'),
 )

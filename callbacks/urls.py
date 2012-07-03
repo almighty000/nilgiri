@@ -37,4 +37,5 @@ urlpatterns = patterns('',
     url(r'^', include('callbacks.zones.urls')),
     url(r'^', include('callbacks.keypairs.urls')),
     url(r'^', include('callbacks.groups.urls')),
+    url(r'^', include('callbacks.snapshots.urls')),
 )

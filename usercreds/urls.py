@@ -27,6 +27,8 @@
 #
 # Author: Imran Hossain Shaon mdshaonimran@gmail.com
 
+# file: usercreds/urls.py
+
 from django.conf.urls.defaults import patterns, include, url
 from django.conf import settings
 

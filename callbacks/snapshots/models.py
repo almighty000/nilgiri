@@ -27,23 +27,7 @@
 #
 # Author: Imran Hossain Shaon mdshaonimran@gmail.com
 
-# file: dashboard/api/euca/addkeypair.py
+# file: nilgiri/callbacks/snapshots/models.py
+from django.db import models
 
-import dashboard.api.nilgiricommand
-from boto.roboto.param import Param
-
-class AddKeyPair(dashboard.api.nilgiricommand.NilgiriCommand):
-
-    def main(self, userid, key_name):
-        conn = self.make_connection_cli(userid)
-        try:
-            query = conn.create_key_pair(key_name)
-        except conn.ResponseError, e:
-            query = e.code
-        return query
-
-    def main_cli(self, userid, key_name):
-        keypair = self.main(userid, key_name)
-        return keypair
-
-
+# Create your models here.

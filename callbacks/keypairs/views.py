@@ -27,7 +27,7 @@
 #
 # Author: Imran Hossain Shaon mdshaonimran@gmail.com
 
-# file: nilgiri/callbacks/keypairs/views.py
+# file: callbacks/keypairs/views.py
 
 from django import shortcuts
 from django.template.context import RequestContext
@@ -42,7 +42,6 @@ import dashboard.api.euca.deletekeypair
 def keypairs(request):
     context = { }
     template = 'keypairs/keypairs.html'
-    #return shortcuts.render_to_response(template, context, context_instance=RequestContext(request))
     return render(request, template, context)
 
 def describe_keypairs(request):
@@ -51,7 +50,6 @@ def describe_keypairs(request):
     keypairs = nilCmd.main_cli(request.user.id)
     context = { 'keypairs': keypairs }
     template = 'keypairs/describe_keypairs.html'
-    #return shortcuts.render_to_response(template, context, context_instance=RequestContext(request))
     return render(request, template, context)
 
 
@@ -64,16 +62,7 @@ def create_keypair(request):
         return HttpResponse(keypair)
     else:
         template = 'keypairs/create_keypair.html'
-        #return shortcuts.render_to_response(template, context, context_instance=RequestContext(request))
         return render(request, template, context)
-
-# not working
-#    response = HttpResponse(mimetype='application/binary')
-#    response['Content-Disposition'] = 'attachment; filename=%s.pem' % slugify(query)
-#    response.write("keypair.name")
-#    response['Content-Length'] = str(len(response.content))
-#    return response
-
 
 def delete_keypair(request):
     query = request.POST.get('key_name', '')

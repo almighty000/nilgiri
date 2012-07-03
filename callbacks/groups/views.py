@@ -27,7 +27,7 @@
 #
 # Author: Imran Hossain Shaon mdshaonimran@gmail.com
 
-# file: nilgiri/callbacks/keypairs/views.py
+# file: callbacks/groups/views.py
 
 from django import shortcuts
 from django.template.context import RequestContext
@@ -44,26 +44,21 @@ import dashboard.api.euca.revoke
 def groups(request):
     context = { }
     template = 'groups/groups.html'
-    #return shortcuts.render_to_response(template, context, context_instance=RequestContext(request))
     return render(request, template, context)
 
-# all groups
 def describe_groups(request):
     nilCmd = dashboard.api.euca.describegroups.DescribeGroups()
     groups = nilCmd.main_cli(request.user.id)
     context = { 'groups': groups }
     template = 'groups/describe_groups.html'
-    #return shortcuts.render_to_response(template, context, context_instance=RequestContext(request))
     return render(request, template, context)
 
-# edit group
 def edit_group(request):
     query = request.POST.get('group_name', '')
     nilCmd = dashboard.api.euca.editgroup.EditGroup()
     groups = nilCmd.main_cli(request.user.id, query)
     context = { 'groups': groups }
     template = 'groups/edit_group.html'
-    #return shortcuts.render_to_response(template, context, context_instance=RequestContext(request))
     return render(request, template, context)
 
 def describe_group(request):
@@ -72,7 +67,6 @@ def describe_group(request):
     groups = nilCmd.main_cli(request.user.id, query)
     context = { 'groups': groups }
     template = 'groups/describe_group.html'
-    #return shortcuts.render_to_response(template, context, context_instance=RequestContext(request))
     return render(request, template, context)
 
 def create_group(request):
@@ -82,7 +76,6 @@ def create_group(request):
     group = nilCmd.main_cli(request.user.id, query_name, query_description)
     context = { 'group': group }
     template = 'groups/create_group.html'
-    #return shortcuts.render_to_response(template, context, context_instance=RequestContext(request))
     return render(request, template, context)
 
 

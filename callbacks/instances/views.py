@@ -27,7 +27,7 @@
 #
 # Author: Imran Hossain Shaon mdshaonimran@gmail.com
 
-# file: nilgiri/callbacks/instances/views.py
+# file: callbacks/instances/views.py
 
 from django import shortcuts
 from django.template.context import RequestContext
