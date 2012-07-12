@@ -29,12 +29,16 @@
             <td class="">
               <div class="attach_action_view">
             {% if volume.status == "in-use" %}
-            <!-- <button data-loading-text="loading..." class="btn btn-primary" disabled="disabled" href="#" value="">Attach</button> -->
-            <button data-loading-text="loading..." class="btn btn-success snapshot"  href="#" value="{{ volume.id }}">Snapshot</button>
+            <button data-loading-text="loading..." class="btn btn-primary" disabled="disabled" href="#" value="">Attach</button>
               <button data-loading-text="loading..." class="btn btn-danger detach_volumes" href="#" value="{{ volume.id }}">Detach</button>
             {% else %}
               <button data-loading-text="loading..." class="btn btn-primary attach_volumes" href="#" value="">Attach</button>
               <button data-loading-text="loading..." class="btn btn-danger delete_volumes" href="#" value="{{ volume.id }}">Delete</button>
+              {% endif %}
+            {% if volume.snapshot_id == None %}
+            <button data-loading-text="loading..." class="btn btn-success snapshot"  href="#" value="{{ volume.id }}">Snapshot</button>
+            {% else %}
+            <button data-loading-text="loading..." class="btn btn-success snapshot" disabled="disabled"  href="#" value="{{ volume.id }}">Snapshot</button>
             {% endif %}
               </div>
               
