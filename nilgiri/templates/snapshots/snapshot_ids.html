@@ -1,0 +1,5 @@
+<select style="width: 200px;;" id="ghost_snapshot_id">
+    {% for snapshot in snapshots %}
+    <option value="{{ snapshot.id }}">{{ snapshot.id }}</option>
+    {% endfor  %}
+</select>

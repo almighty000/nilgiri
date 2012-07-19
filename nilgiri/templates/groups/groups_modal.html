@@ -1,0 +1,77 @@
+<h3>Create new Security Group</h3>
+<div class="group_action">
+    <div class="well">
+        <strong>Name: </strong><input type="text" id="group_name" style="margin-bottom: 0px;" />&nbsp;
+        <strong>Description: </strong><input type="text" id="group_description" style="margin-bottom: 0px;" />
+        <button data-loading-text="loading..." class="btn btn-primary create_group" value="">Create</button>
+    </div>
+    <div class="accordion group_save" id="accordion2">
+
+    </div>
+</div>
+
+<h3>Available Groups</h3>
+<div class="well wellmenu">
+    <a href="" id="refresh_groups" class="btn"><i class="icon-refresh"></i> Refresh</a>
+</div>
+<div id="available_groups"><center><img src="{{ STATIC_URL }}images/loading.gif" /></div>
+
+    <script>
+        $(document).ready(function() {
+            $.ajax({
+                url: "/groups/describeModal",
+                type: "POST",
+                data: {
+                    csrfmiddlewaretoken: '{{ csrf_token }}'
+                },
+                success: function(data) {
+                    $('div#available_groups').html(data);
+                },
+                crossDomain: false
+            });
+        });
+
+        $("a#refresh_groups").click(function(e) {
+            $('div#available_groups').load("/groups/describeModal");
+            e.preventDefault();
+        });
+
+        $("button.create_group").click(function() {
+            var that = $(this);
+            $(".create_group").button('loading');
+            $.ajax({
+                url: "/groups/createGroup",
+                type: "POST",
+                data: {
+                    'group_name':$("#group_name").val(),
+                    'group_description':$("#group_description").val(),
+                    csrfmiddlewaretoken: '{{ csrf_token }}'
+                },
+                success: function(data) {
+                    $(".create_group").button('reset');
+                    $("input#group_name").val("");
+                    $("input#group_description").val("");
+                    $('div#available_groups').load("/groups/describeModal");
+                },
+                crossDomain: false
+            });
+        });
+
+        $("button.modal_back").unbind('click');
+        $("button.modal_back").click(function(e) {
+            $("div.launch_modal_div").html('<center><img src="{{ STATIC_URL }}images/loading.gif" /></center>');
+            $("div.modal-footer").html('<a href="#" class="btn" data-dismiss="modal" >Close</a>');
+            $.ajax({
+                url: "/keypairs/modalKeypairs",
+                type: 'POST',
+                data: {
+                    csrfmiddlewaretoken: '{{ csrf_token }}'
+                },
+                success: function(data) {
+                    $("div.launch_modal_div").html(data);
+                },
+                crossDomain: false
+            });
+            e.preventDefault();
+        });
+    </script>

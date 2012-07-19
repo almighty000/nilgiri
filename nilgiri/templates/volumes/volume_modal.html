@@ -1,0 +1,42 @@
+Instance ID: <div id="instance_ids"><img src="/static/images/loading_small.gif" /></div>
+Device Name:<div><input type="text" id="ghost_device_name" class="modal_inputs" placeholder="vdb" /></div>
+Volume ID: <div id="volumeId_div"></div>
+
+<button data-loading-text="loading..." data-dismiss="modal" class="btn btn-primary save_attachment" value="">Save</button>
+
+<script>
+
+    $(document).ready(function() {
+        $.ajax({
+            url: "/instances/instanceIds",
+            type: "POST",
+            data: {
+                csrfmiddlewaretoken: '{{ csrf_token }}'
+            },
+            success: function(data) {
+                $("div#instance_ids").html(data);
+            },
+            crossDomain: false
+        }); 
+    });
+
+    $("button.save_attachment").click(function() {
+        $.ajax({
+            url: "/volumes/attachVolume",
+            type: "POST",
+            data: {
+                'vol_id': $("span#volume_id").text(),
+                'instance_id': $("select#ghost_instance_ids").val(),
+                'device_name': $("input#ghost_device_name").val(),
+                csrfmiddlewaretoken: '{{ csrf_token }}'
+            },
+            success: function(data) {
+                $('#volume_modal').modal('hide');
+                $("div#volumes_container").load('/volumes/describeVolumes');
+            },
+            crossDomain: false
+        });
+    });
+</script>
+
+

@@ -1,0 +1,52 @@
+Zone: <div id="zones"><img src="/static/images/loading_small.gif" /></div>
+Snapshot ID: <div id="snapshot_ids"><img src="/static/images/loading_small.gif" /></div>
+
+<button data-loading-text="loading..." class="btn btn-primary save_snap_volumes" data-dismiss="modal" value="">Save</button>
+
+<script>
+    $(document).ready(function() {
+        $.ajax({
+            url: "/zones/describe_available_zones",
+            type: "POST",
+            data: {
+                'feed': 'zone_feed',
+                csrfmiddlewaretoken: '{{ csrf_token }}'
+            },
+            success: function(data) {
+                $("div#zones").html(data);
+            },
+            crossDomain: false
+        }); 
+        $.ajax({
+            url: "/snapshots/snapshotIds",
+            type: "POST",
+            data: {
+                csrfmiddlewaretoken: '{{ csrf_token }}'
+            },
+            success: function(data) {
+                $("div#snapshot_ids").html(data);
+            },
+            crossDomain: false
+        });
+    });
+
+    $("button.save_snap_volumes").click(function() {
+        var that = $(this);
+        that.button('loading');
+        $.ajax({
+            url: "/volumes/snapCreateVolume",
+            type: "POST",
+            data: {
+                'snapshot_id': $("#ghost_snapshot_id").val(),
+                'zone': $("#ghost_available_zones").val(),
+                csrfmiddlewaretoken: '{{ csrf_token }}'
+            },
+            success: function(data) {
+                $("button.save_snap_volumes").button('reset');
+            },
+            crossDomain: false
+        });
+    });
+</script>
+
+

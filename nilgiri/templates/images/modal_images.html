@@ -1,0 +1,26 @@
+<h3>Available Images</h3>
+<div class="well wellmenu">
+    <a href="" id="refresh_images" class="btn"><i class="icon-refresh"></i> Refresh</a>
+</div>
+<div id="available_images"><center><img src="/static/images/loading.gif" /></center></div>
+
+<script>
+    $(document).ready(function() {
+        $.ajax({
+            url: "/images/modalDescribe",
+            type: "POST",
+            data: {
+                csrfmiddlewaretoken: '{{ csrf_token }}'
+            },
+            success: function(data) {
+                $('div#available_images').html(data);
+            },
+            crossDomain: false
+        });
+    });
+
+    $("a#refresh_images").click(function(e) {
+        $('div#available_images').load("/images/modalDescribe");
+        e.preventDefault();
+    });
+</script>

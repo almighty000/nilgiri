@@ -1,0 +1,57 @@
+<table class="flexme2">
+    <thead>
+        <tr>
+            <th width="70">Keyname</th>
+            <th width="350">fingerprint</th>
+            <th width="100">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for keypair in keypairs  %}
+        <tr>
+            <td>{{ keypair.name }}</td>
+            <td>{{ keypair.fingerprint }}</td>
+            <td>
+                <button data-loading-text="loading..." class="btn btn-mini btn-primary select_key" value="{{ keypair.name }}">Select</button>
+                <button class="btn btn-mini btn-danger delete_key" href="#" value="{{ keypair.name }}">Delete</button>
+            </td>
+        </tr>
+        {% endfor  %}
+    </tbody>
+</table>
+
+<script>
+    $('.flexme2').flexigrid({
+        height : 'auto',
+        width : 'auto',
+        striped : true
+    });
+
+    $("button.select_key").click(function() {
+        var that = $(this);
+        $.ajax({
+            url: "/groups/modalGroups",
+            type: "POST",
+            data: {
+                csrfmiddlewaretoken: '{{ csrf_token }}'
+            },
+            success: function(data) {
+                $("input#selected_key").attr("value", that.attr("value"));
+                $("div.launch_modal_div").html(data);
+            },
+            crossDomain: false
+        });
+
+    });
+    
+    $("button.delete_key").click(function() {
+        var that = $(this);
+        var params={
+            'key_name':that.attr("value"),
+            csrfmiddlewaretoken: '{{ csrf_token }}'
+        }
+        $.post("/keypairs/deleteKeypair", params, function(data) {
+            $('div#available_keys').load('/keypairs/describeModal');
+        });
+    });
+</script>

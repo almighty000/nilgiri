@@ -1,0 +1,76 @@
+<h3>Available Snapshots</h3>
+<div class="well wellmenu">
+    <a href="" id="refresh_snapshots" class="btn"><i class="icon-refresh"></i> Refresh</a>
+    <a href="" id="create_vol_from_snap" class="btn"><i class="icon-cog"></i> Create Volume</a>
+</div>
+
+<div id="snapshot_modal" class="modal hide fade" style="margin: -150px 0 0 -270px;">
+    <div class="modal-header">
+        <a class="close" data-dismiss="modal" >&times;</a>
+        <h3>Create Volume</h3>
+    </div>
+    <div class="modal-body">
+        <center><img src="/static/images/loading.gif" /></center>
+    </div>
+    <div class="modal-footer">
+    </div>
+</div>
+<div id="snapshot_container"><center><img src="/static/images/loading.gif" /></center></div>
+
+
+<script>
+    
+    $('.flexme2').flexigrid({
+        height : 'auto',
+        width : 'auto',
+        striped : true
+    });
+
+    $(document).ready(function(e){
+        $.ajax({
+            url: "/snapshots/describeSnapshots",
+            type: "POST",
+            data: {
+                csrfmiddlewaretoken: '{{ csrf_token }}'
+            },
+            success: function(data) {
+                $("div#snapshot_container").html(data);
+            },
+            crossDomain: false
+        });
+    });
+
+    $("a#refresh_snapshots").click(function(e) {
+        $("div#snapshot_container").html('<center><img src="/static/images/loading.gif" /></center>');
+        $.ajax({
+            url: "/snapshots/describeSnapshots",
+            type: "POST",
+            data: {
+                csrfmiddlewaretoken: '{{ csrf_token }}'
+            },
+            success: function(data) {
+                $("div#snapshot_container").html(data);
+            },
+            crossDomain: false
+        });
+
+        e.preventDefault();
+    });
+
+    $("#create_vol_from_snap").click(function(e) {
+        $('#snapshot_modal').modal('show');
+        $.ajax({
+            url: "/snapshots/volumeFromSnap",
+            type: "POST",
+            data: {
+                csrfmiddlewaretoken: '{{ csrf_token }}'
+            },
+            success: function(data) {
+                $("div#snapshot_modal .modal-body").html(data);
+            },
+            crossDomain: false
+        });
+
+        e.preventDefault();
+    });
+</script>
