@@ -39,22 +39,28 @@ import dashboard.api.euca.describeinstances
 import dashboard.api.euca.terminateinstances
 import dashboard.api.euca.runinstances
 
+def instances(request):
+    context = { }
+    template = "instances/instances.html"
+    return render(request, template, context)
 
-def describe_instances(request):
+def describeInstances(request):
     userid = request.user.id
-    feed = request.POST.get('feed', '')
     nilCmd = dashboard.api.euca.describeinstances.DescribeInstances()
     reservations = nilCmd.main_cli(request.user.id)
     context = { 'reservations': reservations }
-    if not feed:
-        template = 'instances/describe_instances.html'
-        return render(request, template, context)
-    else:
-        if feed == "volume_feed":
-            template = 'instances/instance_ids.html'
-            return render(request, template, context)
+    template = 'instances/describe_instances.html'
+    return render(request, template, context)
 
-def terminate_instances(request):
+def instanceIds(request):
+    userid = request.user.id
+    nilCmd = dashboard.api.euca.describeinstances.DescribeInstances()
+    reservations = nilCmd.main_cli(request.user.id)
+    context = { 'reservations': reservations }
+    template = 'instances/instance_ids.html'
+    return render(request, template, context)
+
+def terminateInstances(request):
     query = request.POST.get('id', '')
     nilCmd = dashboard.api.euca.terminateinstances.TerminateInstances()
     instances = nilCmd.main_cli(request.user.id, query)
@@ -68,14 +74,12 @@ def launch_instance(request):
     template = "instances/launch_instance.html"
     return render(request, template, context)
 
-
 def run_instances(request):
     query_key = request.POST.get('selected_key', '')
     query_image = request.POST.get('selected_image', '')
     query_groups = request.POST.get('selected_group', '')
     query_instance_type = request.POST.get('instance_type', '')
     query_addressing_type = request.POST.get('addressing_type', '')
-    
     groups = []
     groups.append(query_groups)
     nilCmd = dashboard.api.euca.runinstances.RunInstances()

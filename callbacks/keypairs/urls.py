@@ -34,7 +34,9 @@ from django.conf import settings
 
 urlpatterns = patterns('callbacks.keypairs.views',
     url(r'^keypairs/keypairs', 'keypairs'),
-    url(r'^keypairs/describe_keypairs', 'describe_keypairs'),
-    url(r'^keypairs/create_keypair', 'create_keypair'),
-    url(r'^keypairs/delete_keypair', 'delete_keypair'),
+    url(r'^keypairs/modalKeypairs', 'modalKeypairs'),
+    url(r'^keypairs/describeKeypairs', 'describeKeypairs'),
+    url(r'^keypairs/describeModal', 'describeModal'),
+    url(r'^keypairs/createKeypair', 'createKeypair'),
+    url(r'^keypairs/deleteKeypair', 'deleteKeypair'),
 )

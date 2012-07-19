@@ -1,3 +1,47 @@
-body {
-    background-color: #FAFAFA;
+html,body {
+    background-color: #FFFFFF;
+}
+
+div#page_content {
+    height: 100%;
+    min-height: 350px;
+}
+
+.uneditable-input {
+    cursor: default;
+}
+
+div.full_page {
+    height: 100%;
+    min-height: 300px;
+}
+
+form.signup {
+    margin: 0px;
+}
+
+div.nil-banner {
+    padding: 30px;
+}
+
+div.nil-banner h1 {
+    font-size: 50px;
+}
+
+div.wellmenu {
+    padding: 5px;
+    margin-bottom: 5px;
+    background: url("images/fhbg.gif") repeat-x scroll center bottom #FAFAFA;
+}
+
+.modal_inputs {
+    width: 200px;
+}
+
+div.modalme {
+    line-height: 0px;
+}
+
+table.flexme2 tr td,th {
+    font-size: 12px;
 }

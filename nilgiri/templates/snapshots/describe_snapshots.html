@@ -1,16 +1,15 @@
-Snapshots becoming ready! :D
-
-<table class="table table-bordered table-striped">
+<div id="desc_snaps">
+<table class="flexme2">
     <thead>
         <tr>
-            <th>Snapshot ID</th>
-            <th>Volume ID</th>
-            <th>Status</th>
-            <th>Started</th>
-            <th>Progress</th>
-            <th>Volume Size</th>
-            <th>Description</th>
-            <th>Action</th>
+            <th width="90">Snapshot ID</th>
+            <th width="80">Volume ID</th>
+            <th width="60">Status</th>
+            <th width="80">Started</th>
+            <th width="60">Progress</th>
+            <th width="50">Size</th>
+            <th width="70">Description</th>
+            <th width="50">Action</th>
         </tr>
     </thead>
     <tbody>
@@ -24,108 +23,37 @@ Snapshots becoming ready! :D
             <td>{{ snapshot.volume_size }}</td>
             <td>{{ snapshot.description }}</td>
             <td>
-                <button data-loading-text="loading..." class="btn btn-danger delete_snapshot" href="#" value="{{ snapshot.id }}">Delete</button>
+                <button data-loading-text="loading..." class="btn btn-mini btn-danger delete_snapshot" href="#" value="{{ snapshot.id }}">Delete</button>
             </td>
         </tr>
         {% endfor %}
     </tbody>
 </table>
+</div>
+<script>
+    
+    $('.flexme2').flexigrid({
+        height : 'auto',
+        width : 'auto',
+        striped : true
+    });
 
-    <script>
-        $("button.delete_snapshot").click(function() {
-            var that = $(this);
-            that.button('loading');
-            var params={
-                'snapshot_id': that.attr("value")
-            };
-            $.ajax({
-                url: "/snapshots/delete_snapshot",
-                type: "POST",
-                data: {
-                    'snapshot_id': that.attr("value"),
-                    csrfmiddlewaretoken: '{{ csrf_token }}'
-                },
-                success: function(data) {
-                    $("button.delete_snapshot").button('reset');
-                    that.parents("tr").hide();
-                },
-                crossDomain: false
-            })
-        });
-        
-        $("button.attach_volumes").click(function() {
-            var that = $(this);
-            that.button('loading');
-            that.parents("tr").find("div.attach_action_view").hide();
-            that.parents("tr").find("div.attach_action_view_ghost").show();
-            $.ajax({
-                url: "/instances/describe_instances",
-                type: "POST",
-                data: {
-                    'feed': 'volume_feed',
-                    csrfmiddlewaretoken: '{{ csrf_token }}'
-                },
-                success: function(data) {
-                  that.button('reset');
-                  that.parents("tr").find(".attach_device_view").html('<input id="ghost_device_name" style="width: auto;" type="text" />');
-                  that.parents("tr").find(".attach_instance_view").html(data);
-                },
-                crossDomain: false
-            });
-        });
-        
-        $("button.attach_volumes_cancel").click(function() {
-          var that = $(this);
-          that.parents("tr").find("div.attach_action_view_ghost").hide();
-          that.parents("tr").find("div.attach_action_view").show();
-          that.parents("tr").find(".attach_instance_view").html("None");
-          that.parents("tr").find(".attach_device_view").html("None");
-        });
-        
-        $("button.attach_volumes_save").click(function() {
-          var that = $(this);
-          var params = {
-            'vol_id': that.attr("value"),
-            'instance_id': $("select#ghost_instance_ids").val(),
-            'device_name': $("input#ghost_device_name").val()
-          };
-          $.ajax({
-                url: "/volumes/attach_volume",
-                type: "POST",
-                data: {
-                    'vol_id': that.attr("value"),
-                    'instance_id': $("select#ghost_instance_ids").val(),
-                    'device_name': $("input#ghost_device_name").val(),
-                    csrfmiddlewaretoken: '{{ csrf_token }}'
-                },
-                success: function(data) {
-                  $("div.tab-pane").load("/volumes/describe_volumes");
-                },
-                crossDomain: false
-            });
-        });
+    $("button.delete_snapshot").click(function() {
+        var that = $(this);
+        that.button('loading');
+        $.ajax({
+            url: "/snapshots/deleteSnapshot",
+            type: "POST",
+            data: {
+                'snapshot_id': that.attr("value"),
+                csrfmiddlewaretoken: '{{ csrf_token }}'
+            },
+            success: function(data) {
+                $("button.delete_snapshot").button('reset');
+                $("div#desc_snaps").load("/snapshots/describeSnapshots")
+            },
+            crossDomain: false
+        })
+    });
 
-        $("button.detach_volumes").click(function() {
-            var that = $(this);
-            that.button('loading');
-            var params={
-                'vol_id': that.attr("value")
-            }
-            $.ajax({
-                url: "/volumes/detach_volume",
-                type: "POST",
-                data: {
-                    'vol_id': that.attr("value"),
-                    csrfmiddlewaretoken: '{{ csrf_token }}'
-                },
-                success: function(data) {
-                  that.delay(5000).queue(function() {
-                    that.button('reset');
-                    $("div.tab-pane").load("/volumes/describe_volumes");
-                  });
-                },
-                crossDomain: false
-            });
-        });
-
-    </script>
+</script>

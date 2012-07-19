@@ -34,11 +34,13 @@ from django.conf import settings
 
 urlpatterns = patterns('callbacks.groups.views',
     url(r'^groups/groups', 'groups'),
-    url(r'^groups/describe_groups', 'describe_groups'),
-    url(r'^groups/describe_group', 'describe_group'),
-    url(r'^groups/create_group', 'create_group'),
-    url(r'^groups/edit_group', 'edit_group'),
+    url(r'^groups/describeGroups', 'describeGroups'),
+    url(r'^groups/describeGroup', 'describeGroup'),
+    url(r'^groups/createGroup', 'createGroup'),
+    url(r'^groups/editGroup', 'editGroup'),
+    url(r'^groups/deleteGroup', 'deleteGroup'),
     url(r'^groups/revoke_rules', 'revoke_rules'),
     url(r'^groups/authorize_group', 'authorize_group'),
-    url(r'^groups/delete_group', 'delete_group'),
+    url(r'^groups/modalGroups', 'modalGroups'),
+    url(r'^groups/describeModal', 'describeModal'),
 )

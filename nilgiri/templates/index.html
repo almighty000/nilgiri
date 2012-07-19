@@ -2,7 +2,19 @@
 
 {% block title %}Nilgiri Cloud Management Tool{% endblock %}
 
+{% block topmenu %}
+<ul class="nav topmenu">
+    <li class="active"><a href="/">Home</a></li>
+    <li><a href="/dashboard/">Dashboard</a></li>
+    <li><a href="/admin/">Admin</a></li>
+</ul>
+{% endblock %}
+
 {% block content %}
+<div class="full_page">
+    <a href="http://www.eucalyptus.com/"><img src="/static/images/eucalyptus.png" alt="Eucalyptus" /></a>
+<p style="margin-top: 20px;">Eucalyptus enables the creation of on-premise Infrastructure as a Service clouds, with no requirements for retooling the organization's existing IT infrastructure or for introducing any specialized hardware. The Eucalyptus Infrastructure as a Service (IaaS) platform maintains high fidelity with the Amazon Web Services (AWS) API, allowing support for both on-premise and hybrid IaaS clouds.</p>
+</div>
 
 {% endblock %}
 

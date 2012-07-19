@@ -1,14 +1,12 @@
-<h3>Available Images</h3>
-<table class="table table-bordered table-striped">
+<table class="flexme2">
     <thead>
         <tr>
-            <th>ID</th>
-            <th>Location</th>
-            <th>Owner</th>
-            <th>State</th>
-            <th>Type</th>
-            <th>Architecture</th>
-            <th>Action</th>
+            <th width="100">ID</th>
+            <th width="200">Location</th>
+            <th width="100">Owner</th>
+            <th width="100">State</th>
+            <th width="100">Type</th>
+            <th width="100">Architecture</th>
         </tr>
     </thead>
     <tbody>
@@ -25,7 +23,6 @@
             <td>Private</td>
             {% endif %}
             <td>{{ image.architecture }}</td>
-            <td><button data-loading-text="loading..." class="btn btn-primary select_image" value="{{ image.id }}">Select</button></td>
         </tr>
         {% endif %}
         {% endfor %}
@@ -33,23 +30,10 @@
 </table>
 
 <script>
-    $("button.select_image").click(function() {
-        var that = $(this);
-        var params={
-            'id':that.attr("value"),
-        };
-        $.ajax({
-            url: "/keypairs/keypairs",
-            type: "POST",
-            data: {
-                csrfmiddlewaretoken: '{{ csrf_token }}'
-            },
-            success: function(data) {
-                $("input#selected_image").attr("value", that.attr("value"));
-                $("div.launch_modal_div").html(data);
-            },
-            crossDomain: false
-        });
+    $('.flexme2').flexigrid({
+        height : 'auto',
+        width : 'auto',
+        striped : true
     });
-        
+
 </script>

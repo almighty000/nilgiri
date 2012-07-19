@@ -46,14 +46,14 @@ def groups(request):
     template = 'groups/groups.html'
     return render(request, template, context)
 
-def describe_groups(request):
+def describeGroups(request):
     nilCmd = dashboard.api.euca.describegroups.DescribeGroups()
     groups = nilCmd.main_cli(request.user.id)
     context = { 'groups': groups }
     template = 'groups/describe_groups.html'
     return render(request, template, context)
 
-def edit_group(request):
+def editGroup(request):
     query = request.POST.get('group_name', '')
     nilCmd = dashboard.api.euca.editgroup.EditGroup()
     groups = nilCmd.main_cli(request.user.id, query)
@@ -61,7 +61,7 @@ def edit_group(request):
     template = 'groups/edit_group.html'
     return render(request, template, context)
 
-def describe_group(request):
+def describeGroup(request):
     query = request.POST.get('group_name', '')
     nilCmd = dashboard.api.euca.editgroup.EditGroup()
     groups = nilCmd.main_cli(request.user.id, query)
@@ -69,17 +69,14 @@ def describe_group(request):
     template = 'groups/describe_group.html'
     return render(request, template, context)
 
-def create_group(request):
+def createGroup(request):
     query_name = request.POST.get('group_name', '')
     query_description = request.POST.get('group_description', '')
     nilCmd = dashboard.api.euca.addgroup.AddGroup()
-    group = nilCmd.main_cli(request.user.id, query_name, query_description)
-    context = { 'group': group }
-    template = 'groups/create_group.html'
-    return render(request, template, context)
+    status = nilCmd.main_cli(request.user.id, query_name, query_description)
+    return HttpResponse(status)
 
-
-def delete_group(request):
+def deleteGroup(request):
     query = request.POST.get('group_name', '')
     nilCmd = dashboard.api.euca.deletegroup.DeleteGroup()
     status = nilCmd.main_cli(request.user.id, query)
@@ -107,3 +104,17 @@ def revoke_rules(request):
     nilCmd = dashboard.api.euca.revoke.Revoke()
     status = nilCmd.main_cli(request.user.id, query_group_name, query_ip_protocol, query_from_port, query_to_port, query_cidr_ip)
     return HttpResponse(status)
+
+# modal
+def modalGroups(request):
+    context = { }
+    template = 'groups/groups_modal.html'
+    return render(request, template, context)
+
+def describeModal(request):
+    nilCmd = dashboard.api.euca.describegroups.DescribeGroups()
+    groups = nilCmd.main_cli(request.user.id)
+    context = { 'groups': groups }
+    template = 'groups/describe_modal.html'
+    return render(request, template, context)
+

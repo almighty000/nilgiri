@@ -33,17 +33,10 @@
     {% endfor %}
     {% endfor %}
 </table>
-<script>
 
+<script>
     $("button.revoke_rules").click(function() {
         var that = $(this);
-//        var params = {
-//            'group_name': $("#selected_group").attr("value"),
-//            'ip_protocol': that.attr("ip_protocol"),
-//            'from_port': that.attr("from_port"),
-//            'to_port': that.attr("to_port"),
-//            'cidr_ip': that.attr("cidr_ip")
-//        }
         $.ajax({
             url: '/groups/revoke_rules',
             type: 'POST',
@@ -57,14 +50,14 @@
             },
             success: function(data) {
                 $.ajax({
-                    url: '/groups/describe_group',
+                    url: '/groups/describeGroup',
                     type: 'POST',
                     data: {
                         'group_name': $("#selected_group").attr("value"),
                         csrfmiddlewaretoken: '{{ csrf_token }}'
                     },
                     success: function(data) {
-                        $("div.describe_group").html(data);
+                        $("div#describe_group").html(data);
                     },
                     //crossDomain: false
                 });

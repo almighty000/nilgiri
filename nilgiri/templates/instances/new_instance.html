@@ -3,7 +3,6 @@
     <thead>
         <tr>
             <th>ID</th>
-            <th>Owner</th>
             <th>Groups</th>
             <th>Instance</th>
             <th>Image</th>
@@ -11,19 +10,14 @@
             <th>Pvt DNS</th>
             <th>State</th>
             <th>Key</th>
-            <th>AMI</th>
             <th>Type</th>
             <th>Launce Time</th>
-            <th>Cluster</th>
-            <!-- <th>Kernel</th>
-            <th>Ramdisk</th> -->
             <th>Action</th>
         </tr>
     </thead>
     <tbody>
         <tr>
             <td>{{ reservation.id }}</td>
-            <td>{{reservation.owner_id }}</td>
             <td>
                 {% for group in reservation.groups %}
                 {{ group.id }} &nbsp;
@@ -37,12 +31,8 @@
 
             <td>{{ instance.state }}</td>
             <td>{{ instance.key_name }}</td>
-            <td>{{ instance.ami_launch_index }}</td>
             <td>{{ instance.instance_type }}</td>
             <td>{{ instance.launch_time }}</td>
-            <td>{{ instance.placement }}</td>
-            <!-- <td>{{ instance.kernel }}</td>
-            <td>{{ instance.ramdisk }}</td> -->
             {% if instance.state == "running" %}
             <td><button id="" data-loading-text="loading..." class="btn btn-primary terminate" value="{{ instance.id }}">Terminate</button></td>
             {% endif %}

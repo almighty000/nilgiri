@@ -44,8 +44,7 @@ def keypairs(request):
     template = 'keypairs/keypairs.html'
     return render(request, template, context)
 
-def describe_keypairs(request):
-    # keypairs
+def describeKeypairs(request):
     nilCmd = dashboard.api.euca.describekeypairs.DescribeKeyPairs()
     keypairs = nilCmd.main_cli(request.user.id)
     context = { 'keypairs': keypairs }
@@ -53,7 +52,7 @@ def describe_keypairs(request):
     return render(request, template, context)
 
 
-def create_keypair(request):
+def createKeypair(request):
     query = request.POST.get('key_name', '')
     nilCmd = dashboard.api.euca.addkeypair.AddKeyPair()
     keypair = nilCmd.main_cli(request.user.id, query)
@@ -64,8 +63,22 @@ def create_keypair(request):
         template = 'keypairs/create_keypair.html'
         return render(request, template, context)
 
-def delete_keypair(request):
+def deleteKeypair(request):
     query = request.POST.get('key_name', '')
     nilCmd = dashboard.api.euca.deletekeypair.DeleteKeyPair()
     keypair = nilCmd.main_cli(request.user.id, query)
     return HttpResponse(keypair)
+
+# modal
+def modalKeypairs(request):
+    context = { }
+    template = 'keypairs/keypairs_modal.html'
+    return render(request, template, context)
+
+def describeModal(request):
+    nilCmd = dashboard.api.euca.describekeypairs.DescribeKeyPairs()
+    keypairs = nilCmd.main_cli(request.user.id)
+    context = { 'keypairs': keypairs }
+    template = 'keypairs/describe_modal.html'
+    return render(request, template, context)
+

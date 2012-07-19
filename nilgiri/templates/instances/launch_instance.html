@@ -1,8 +1,16 @@
-<div class="well">
-    <p>Image: {{ image }}</p>
-    <p>Key: {{ key }}</p>
-    <p>Group: {{ group }}</p>
+<strong>Image:</strong>
+<div>
+    <span class="input-xlarge uneditable-input modal_inputs">{{ image }}</span>
 </div>
+<strong>Key:</strong>
+<div>
+    <span class="input-xlarge uneditable-input modal_inputs">{{ key }}</span>
+</div>
+<strong>Group:</strong>
+<div>
+    <span class="input-xlarge uneditable-input modal_inputs">{{ group }}</span>
+</div>
+
 <h3>Instance Type</h3>
 <div class="btn-group" data-toggle="buttons-radio">
     <button class="btn btn-primary instance_type" value="m1.small" >m1.small</button>
@@ -25,14 +33,6 @@
 <script>
     $("button.launch_instance_button").click(function() {
         $("button.launch_instance_button").button('loading')
-        var params = {
-            'selected_image': $("#selected_image").attr("value"),
-            'selected_key': $("#selected_key").attr("value"),
-            'selected_group': $("#selected_group").attr("value"),
-            'instance_type': $("#final_instance_type").attr("value"),
-            'addressing_type': $("#final_addressing_type").attr("value")
-        }
-
         $.ajax({
             url: "/instances/run_instances",
             type: 'POST',
@@ -52,11 +52,11 @@
             crossDomain: false
         });
     });
-    
+
     $("button.modal_back").unbind('click');
     $("button.modal_back").click(function() {
         $.ajax({
-            url: "/groups/groups",
+            url: "/groups/modalGroups",
             type: 'POST',
             data: {
                 csrfmiddlewaretoken: '{{ csrf_token }}'
@@ -66,13 +66,13 @@
             },
             crossDomain: false
         });
-        
+
     });
-    
+
     $("button.instance_type").click(function() {
         $("input#final_instance_type").attr("value", $(this).attr("value"));
     });
-       
+
     $("button.addressing_type").click(function() {
         $("input#final_addressing_type").attr("value", $(this).attr("value"));
     });

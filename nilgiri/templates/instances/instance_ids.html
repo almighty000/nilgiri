@@ -1,4 +1,4 @@
-<select style="width: auto;" id="ghost_instance_ids">
+<select class="modal_inputs" id="ghost_instance_ids">
     {% for reservation in reservations %}
         {% for instance in reservation.instances %}
             {% if instance.state == "running" %}

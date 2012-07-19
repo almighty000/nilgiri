@@ -49,7 +49,7 @@ def submit(request):
     if user is not None:
         if user.is_active:
             login(request, user)
-    return HttpResponseRedirect('/dashboard/')
+    return HttpResponseRedirect('/')
 
 def logout_view(request):
     logout(request)
@@ -57,6 +57,9 @@ def logout_view(request):
 
 def sign_up(request):
     return render(request, 'usercreds/sign_up.html')
+
+#def dashboard(request):
+#    return render(request, 'usercreds/sign_up.html')
 
 def create_user(request):
     username = request.POST.get('username')

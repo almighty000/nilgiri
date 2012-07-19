@@ -33,7 +33,10 @@ from django.conf.urls.defaults import patterns, include, url
 from django.conf import settings
 
 urlpatterns = patterns('callbacks.snapshots.views',
-    url(r'^snapshots/describe_snapshot_view', 'describe_snapshot_view'),
-    url(r'^snapshots/delete_snapshot', 'delete_snapshot'),
-    url(r'^snapshots/create_snapshot', 'create_snapshot'),
+    url(r'^snapshots/describeSnapshots', 'describeSnapshots'),
+    url(r'^snapshots/snapshots', 'snapshots'),
+    url(r'^snapshots/snapshotIds', 'snapshotIds'),
+    url(r'^snapshots/deleteSnapshot', 'deleteSnapshot'),
+    url(r'^snapshots/createSnapshot', 'createSnapshot'),
+    url(r'^snapshots/volumeFromSnap', 'volumeFromSnap'),
 )

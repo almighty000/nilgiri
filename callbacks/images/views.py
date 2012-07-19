@@ -36,10 +36,26 @@ from django.shortcuts import render_to_response, render
 
 import dashboard.api.euca.describeimages
 
-def describe_images(request):
-    # images
+def modalImages(request):
+    context = { }
+    template = 'images/modal_images.html'
+    return render(request, template, context)
+
+def modalDescribe(request):
+    nilCmd = dashboard.api.euca.describeimages.DescribeImages()
+    images = nilCmd.main_cli(request.user.id)
+    context = { 'images': images }
+    template = 'images/modal_describe.html'
+    return render(request, template, context)
+
+def images(request):
+    context = { }
+    template = 'images/images.html'
+    return render(request, template, context)
+
+def describeImages(request):
     nilCmd = dashboard.api.euca.describeimages.DescribeImages()
     images = nilCmd.main_cli(request.user.id)
     context = { 'images': images }
     template = 'images/describe_images.html'
-    return render(request, 'images/describe_images.html', context)
+    return render(request, template, context)

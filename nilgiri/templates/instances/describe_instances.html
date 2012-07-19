@@ -1,29 +1,23 @@
-<h3>Your instances</h3>
-<table class="table table-bordered table-striped" style="font-size: 12px;">
+<table class="flexme2" style="font-size: 12px;">
     <thead>
         <tr>
-            <th>ID</th>
-            <th>Owner</th>
-            <th>Groups</th>
-            <th>Instance</th>
-            <th>Image</th>
-            <th>Pub DNS</th>
-            <th>Pvt DNS</th>
-            <th>State</th>
-            <th>Key</th>
-            <th>Type</th>
-            <th>Launce Time</th>
-            <th>Cluster</th>
-            <!-- <th>Kernel</th>
-            <th>Ramdisk</th> -->
-            <th>Action</th>
+            <th width="70">ID</th>
+            <th width="60">Groups</th>
+            <th width="70">Instance</th>
+            <th width="85">Image</th>
+            <th width="80">Pub DNS</th>
+            <th width="80">Pvt DNS</th>
+            <th width="60">State</th>
+            <th width="55">Key</th>
+            <th width="70">Type</th>
+            <th width="80">Launce Time</th>
+            <th width="75">Action</th>
         </tr>
     </thead>
     <tbody>
         {% for reservation in reservations %}
         <tr>
             <td>{{ reservation.id }}</td>
-            <td>{{reservation.owner_id }}</td>
             <td>
                 {% for group in reservation.groups %}
                 {{ group.id }} &nbsp;
@@ -39,20 +33,17 @@
             <td>{{ instance.key_name }}</td>
             <td>{{ instance.instance_type }}</td>
             <td>{{ instance.launch_time }}</td>
-            <td>{{ instance.placement }}</td>
-            <!-- <td>{{ instance.kernel }}</td>
-            <td>{{ instance.ramdisk }}</td> -->
             {% if instance.state == "running" %}
-            <td><button id="" data-loading-text="loading..." class="btn btn-danger terminate" value="{{ instance.id }}">Terminate</button></td>
+            <td><button id="" data-loading-text="loading..." class="btn btn-mini btn-danger terminate" value="{{ instance.id }}">Terminate</button></td>
             {% endif %}
             {% if instance.state == "pending" %}
-            <td><button id="" data-loading-text="loading..." class="btn btn-success" value="" disabled="disabled">Pending</button></td>
+            <td><button id="" data-loading-text="loading..." class="btn btn-mini btn-success" value="" disabled="disabled">Pending</button></td>
             {% endif %}
             {% if instance.state == "shutting-down" %}
-            <td><button id="" data-loading-text="loading..." class="btn btn-danger" value="" disabled="disabled">Shutting-down</button></td>
+            <td><button id="" data-loading-text="loading..." class="btn btn-mini btn-danger" value="" disabled="disabled">Shutting-down</button></td>
             {% endif %}
             {% if instance.state == "terminated" %}
-            <td><button id="" data-loading-text="loading..." class="btn btn-danger" value="" disabled="disabled">Terminated</button></td>
+            <td><button id="" data-loading-text="loading..." class="btn btn-mini btn-danger" value="" disabled="disabled">Terminated</button></td>
             {% endif %}
             {% endfor %}
         </tr>
@@ -60,26 +51,39 @@
     </tbody>
 </table>
 <script>
+
+    $('.flexme2').flexigrid({
+        height : 'auto',
+        width : 'auto',
+        striped : true
+    });
+
     $("button.terminate").click(function() {
-        $('div#running_instances').delay(2000);
-        $('div#running_instances').load("/instances/describe_instances");
+        $(this).button('loading');
         var that = $(this);
-        that.text('Terminating').attr('disabled', 'disabled');
-        var params={
-            'id':that.attr("value")
-        };
         $.ajax({
-            url: "/instances/terminate_instances",
+            url: "/instances/terminateInstances",
             type: 'POST',
             data: {
                 'id':that.attr("value"),
                 csrfmiddlewaretoken: '{{ csrf_token }}'
             },
             success: function(data) {
-                that.text('Terminated').attr('disabled', 'disabled');
-                $("div.image_section").append('<div class="alert alert-info"><strong>Notice!</strong> Your instance <code>'+that.attr("value")+'</code> has been terminated.</div>');
+                $.ajax({
+                    url: "/instances/describeInstances",
+                    type: "POST",
+                    data: {
+                        csrfmiddlewaretoken: '{{ csrf_token }}'
+                    },
+                    success: function(data) {
+                        that.button('reset');
+                        $("div#instance_container").html(data);
+                    },
+                    crossDomain: false
+                });
             },
             crossDomain: false
         });
     });
+
 </script>

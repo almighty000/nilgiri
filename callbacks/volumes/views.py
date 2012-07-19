@@ -36,39 +36,54 @@ from django.shortcuts import render_to_response, render
 
 import dashboard.api.euca.describevolumes
 import dashboard.api.euca.createvolume
+import dashboard.api.euca.createvolumefromsnapshot
 import dashboard.api.euca.deletevolume
 import dashboard.api.euca.attachvolume
 import dashboard.api.euca.detachvolume
 
-def describe_volumes(request):
+def volumes(request):
+    context = { }
+    template = 'volumes/volumes.html'
+    return render(request, template, context)
+
+def describeVolumes(request):
     nilCmd = dashboard.api.euca.describevolumes.DescribeVolumes()
     volumes = nilCmd.main_cli(request.user.id)
     context = { 'volumes': volumes }
     template = 'volumes/describe_volumes.html'
     return render(request, template, context)
 
-def create_volume_view(request):
-    context = { }
-    template = 'volumes/create_volume.html'
-    return render(request, template, context)
+#def create_volume_view(request):
+#    context = { }
+#    template = 'volumes/create_volume.html'
+#    return render(request, template, context)
 
-def create_volume(request):
+def createVolume(request):
     query_vol_size = request.POST.get('vol_size', '')
     query_vol_zone = request.POST.get('vol_zone', '')
     nilCmd = dashboard.api.euca.createvolume.CreateVolume()
-    volume = nilCmd.main_cli(request.user.id, query_vol_size, query_vol_zone)
-    context = { 'volume': volume }
-    template = 'volumes/new_volume.html'
-    return render(request, template, context)
+    status = nilCmd.main_cli(request.user.id, query_vol_size, query_vol_zone)
+    return HttpResponse(status)
 
-def delete_volume(request):
+def snapCreateVolume(request):
+    query_snapshot_id = request.POST.get('snapshot_id', '')
+    query_zone = request.POST.get('zone', '')
+    nilCmd = dashboard.api.euca.createvolumefromsnapshot.CreateVolumeFromSnapshot()
+    status = nilCmd.main_cli(request.user.id, query_snapshot_id, query_zone)
+    return HttpResponse(status)
+
+def deleteVolume(request):
     query_vol_id = request.POST.get('vol_id', '')
     nilCmd = dashboard.api.euca.deletevolume.DeleteVolume()
     status = nilCmd.main_cli(request.user.id, query_vol_id)
     return HttpResponse(status)
 
+def volumeModal(request):
+    context = { }
+    template = 'volumes/volume_modal.html'
+    return render(request, template, context)
 
-def attach_volume(request):
+def attachVolume(request):
     query_vol_id = request.POST.get('vol_id', '')
     query_instance_id = request.POST.get('instance_id', '')
     query_device_name = request.POST.get('device_name', '')
@@ -76,8 +91,7 @@ def attach_volume(request):
     status = nilCmd.main_cli(request.user.id, query_vol_id, query_instance_id, query_device_name)
     return HttpResponse(status)
 
-
-def detach_volume(request):
+def detachVolume(request):
     query_volume_id = request.POST.get('vol_id', '')
     nilCmd = dashboard.api.euca.detachvolume.DetachVolume()
     status = nilCmd.main_cli(request.user.id, query_volume_id)

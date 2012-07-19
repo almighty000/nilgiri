@@ -33,5 +33,8 @@ from django.conf.urls.defaults import patterns, include, url
 from django.conf import settings
 
 urlpatterns = patterns('callbacks.images.views',
-    url(r'^images/describe_images', 'describe_images'),
+    url(r'^images/images', 'images'),
+    url(r'^images/describeImages', 'describeImages'),
+    url(r'^images/modalImages', 'modalImages'),
+    url(r'^images/modalDescribe', 'modalDescribe'),
 )

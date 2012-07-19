@@ -39,21 +39,38 @@ import dashboard.api.euca.describesnapshots
 import dashboard.api.euca.deletesnapshot
 import dashboard.api.euca.createsnapshot
 
-def describe_snapshot_view(request):
+def snapshots(request):
+    context = { }
+    template = 'snapshots/snapshots.html'
+    return render(request, template, context)
+
+def describeSnapshots(request):
     nilCmd = dashboard.api.euca.describesnapshots.DescribeSnapshots()
     snapshots = nilCmd.main_cli(request.user.id)
     context = { 'snapshots': snapshots }
     template = 'snapshots/describe_snapshots.html'
     return render(request, template, context)
 
-def delete_snapshot(request):
+def snapshotIds(request):
+    nilCmd = dashboard.api.euca.describesnapshots.DescribeSnapshots()
+    snapshots = nilCmd.main_cli(request.user.id)
+    context = { 'snapshots': snapshots }
+    template = 'snapshots/snapshot_ids.html'
+    return render(request, template, context)
+
+def deleteSnapshot(request):
     query_snapshot_id = request.POST.get('snapshot_id', '')
     nilCmd = dashboard.api.euca.deletesnapshot.DeleteSnapshot()
     status = nilCmd.main_cli(request.user.id, query_snapshot_id)
     return HttpResponse(status)
 
-def create_snapshot(request):
+def createSnapshot(request):
     query_volume = request.POST.get('volume_id', '')
     nilCmd = dashboard.api.euca.createsnapshot.CreateSnapshot()
     status = nilCmd.main_cli(request.user.id, query_volume)
     return HttpResponse(status)
+
+def volumeFromSnap(request):
+    context = { }
+    template = 'snapshots/snapshot_modal.html'
+    return render(request, template, context)

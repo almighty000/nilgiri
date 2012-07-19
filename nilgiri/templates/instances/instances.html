@@ -1,13 +1,26 @@
-Yes, it is loading.
-
-{{ reservations }}
-
-<script src="{{ STATIC_URL }}assets/js/jquery.js"></script>
-<script src="{{ STATIC_URL }}js/main.js"></script>
+<h3>Your instances</h3>
+<div class="well wellmenu">
+    <a href="" id="refresh_instances" class="btn"><i class="icon-refresh"></i> Refresh</a>
+</div>
+<div id="instance_container"><center><img src="/static/images/loading.gif" /></center></div>
 <script>
-    $(document).ready(function() {
-        $.post("/instances/describe_instances", function(data) {
-            alert(data);
+    $(document).ready(function(e){
+        $.ajax({
+            url: "/instances/describeInstances",
+            type: "POST",
+            data: {
+                csrfmiddlewaretoken: '{{ csrf_token }}'
+            },
+            success: function(data) {
+                $("div#instance_container").html(data);
+            },
+            crossDomain: false
         });
+    });
+    
+    $("a#refresh_instances").click(function(e) {
+        $("div#instance_container").html('<center><img src="/static/images/loading.gif" /></center>');
+        $("div#instance_container").load('/instances/describeInstances');
+        e.preventDefault();
     });
 </script>

@@ -33,8 +33,10 @@ from django.conf.urls.defaults import patterns, include, url
 from django.conf import settings
 
 urlpatterns = patterns('callbacks.instances.views',
-    url(r'^instances/describe_instances', 'describe_instances'),
+    url(r'^instances/describeInstances', 'describeInstances'),
+    url(r'^instances/instanceIds', 'instanceIds'),
+    url(r'^instances/instances', 'instances'),
     url(r'^instances/launch_instance', 'launch_instance'),
     url(r'^instances/run_instances', 'run_instances'),
-    url(r'^instances/terminate_instances', 'terminate_instances'),
+    url(r'^instances/terminateInstances', 'terminateInstances'),
 )
