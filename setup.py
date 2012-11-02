@@ -32,7 +32,7 @@
 from setuptools import setup, find_packages
 from nilgiri import __version__
 
-setup(name = "unleashed",
+setup(name = "nilgiri",
     version = __version__,
     packages = find_packages(),
     classifiers=['Development Status :: 1 - alpha',
